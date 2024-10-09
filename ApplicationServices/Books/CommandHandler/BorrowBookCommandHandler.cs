@@ -1,4 +1,5 @@
 ﻿using ApplicationServices.Books.Command;
+using ApplicationServices.Interfaces.Application;
 using Domain.Entities;
 using Domain.Interfaces.Infrastructure;
 using MediatR;
@@ -12,10 +13,12 @@ namespace ApplicationServices.Books.CommandHandler
     {
         private readonly ILibraryDbContext _context;
         private readonly ILogger<BorrowBookCommandHandler> _logger;
-        public BorrowBookCommandHandler(ILibraryDbContext context, ILogger<BorrowBookCommandHandler> logger)
+        private readonly ICurrentUserService _currentUserService;
+        public BorrowBookCommandHandler(ILibraryDbContext context, ILogger<BorrowBookCommandHandler> logger, ICurrentUserService currentUserService)
         {
             _context = context;
             _logger = logger;
+            _currentUserService = currentUserService;
         }
         public async Task<Result> Handle(BorrowBookCommand request, CancellationToken cancellationToken)
         {
@@ -30,22 +33,20 @@ namespace ApplicationServices.Books.CommandHandler
             {
                 var reservedBook = await _context.Reservations.FirstOrDefaultAsync(b => b.BookId == request.BookId
                                                                                         && !b.IsReservationExpired, cancellationToken);
-                if (reservedBook != null && reservedBook.CustomerId != request.BookId)
+                if (reservedBook != null && reservedBook.CustomerId != _currentUserService.CurrentUserId())
                     return Result.Fail($"{book.Title} reserved by another customer");
             }
             book.IsReserved = false;
             book.IsAvailable = false;
             book.ReturnedDate = DateTime.UtcNow.AddHours(request.Tenor);
-            _context.Books.Add(book);
 
             await _context.Loans.AddAsync(new Loan
             {
                 BookId = request.BookId,
-                CustomerId = Guid.NewGuid()
+                CustomerId = _currentUserService.CurrentUserId()
             }, cancellationToken);
+
             _context.Books.Update(book);
-
-
             var rowAffected = await _context.SaveChangesAsync(cancellationToken);
 
             return rowAffected > 0 ? Result.Ok($"{book.Title} borrowed successfully") : Result.Fail($"{book.Title} borowing failed");

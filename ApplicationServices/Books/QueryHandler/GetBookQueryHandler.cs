@@ -49,7 +49,7 @@ namespace ApplicationServices.Books.QueryHandler
 
             var reserveBook = book.IsReserved ? await _context.Reservations.Where(c => c.BookId == request.BookId)
                                                              .Include(c => c.Customer).ToListAsync(cancellationToken) : [];
-            book.BorrowedBy = reserveBook.Select(c => new BorrowedBy
+            book.ReservedBy = reserveBook.Select(c => new BorrowedBy
             {
                 CustomerName = c?.Customer?.Name,
                 Email = c?.Customer?.Email,

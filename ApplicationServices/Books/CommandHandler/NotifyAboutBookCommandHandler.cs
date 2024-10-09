@@ -1,4 +1,5 @@
 ﻿using ApplicationServices.Books.Command;
+using ApplicationServices.Interfaces.Application;
 using Domain.Entities;
 using Domain.Interfaces.Infrastructure;
 using MediatR;
@@ -12,10 +13,12 @@ namespace ApplicationServices.Books.CommandHandler
     {
         private readonly ILibraryDbContext _context;
         private readonly ILogger<NotifyAboutBookCommandHandler> _logger;
-        public NotifyAboutBookCommandHandler(ILibraryDbContext context, ILogger<NotifyAboutBookCommandHandler> logger)
+        private readonly ICurrentUserService _currentUserService;
+        public NotifyAboutBookCommandHandler(ILibraryDbContext context, ILogger<NotifyAboutBookCommandHandler> logger, ICurrentUserService currentUserService)
         {
             _context = context;
             _logger = logger;
+            _currentUserService = currentUserService;
         }
         public async Task<Result> Handle(NotifyAboutBookCommand request, CancellationToken cancellationToken)
         {
@@ -24,7 +27,7 @@ namespace ApplicationServices.Books.CommandHandler
 
             await _context.Notifications.AddAsync(new Notification
             {
-                CustomerId = Guid.NewGuid(),
+                CustomerId = _currentUserService.CurrentUserId(),
                 NotifyBy = request.NotificationChannel,
                 Notify = false
             }, cancellationToken);

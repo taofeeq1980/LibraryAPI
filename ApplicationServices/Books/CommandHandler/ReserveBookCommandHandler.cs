@@ -1,4 +1,5 @@
 ﻿using ApplicationServices.Books.Command;
+using ApplicationServices.Interfaces.Application;
 using Domain.Entities;
 using Domain.Interfaces.Infrastructure;
 using MediatR;
@@ -12,10 +13,12 @@ namespace ApplicationServices.Books.CommandHandler
     {
         private readonly ILibraryDbContext _context;
         private readonly ILogger<ReserveBookCommandHandler> _logger;
-        public ReserveBookCommandHandler(ILibraryDbContext context, ILogger<ReserveBookCommandHandler> logger)
+        private readonly ICurrentUserService _currentUserService;
+        public ReserveBookCommandHandler(ILibraryDbContext context, ILogger<ReserveBookCommandHandler> logger, ICurrentUserService currentUserService)
         {
             _context = context;
             _logger = logger;
+            _currentUserService = currentUserService;
         }
         public async Task<Result> Handle(ReserveBookCommand request, CancellationToken cancellationToken)
         {
@@ -31,7 +34,7 @@ namespace ApplicationServices.Books.CommandHandler
             await _context.Reservations.AddAsync(new Reservation
             {
                 BookId = request.BookId,
-                CustomerId = Guid.NewGuid()
+                CustomerId = _currentUserService.CurrentUserId()
             }, cancellationToken);
 
             _context.Books.Update(book);

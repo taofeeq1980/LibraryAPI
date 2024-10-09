@@ -62,14 +62,14 @@ namespace LibraryAPI.Controllers
         /// <summary>
         /// Endpoint to borrow a book
         /// </summary>
-        /// <param name="bookId"></param>
+        /// <param name="command"></param>
         /// <returns></returns>
-        [HttpPost("borrow/{bookId}")]
+        [HttpPost("borrow")]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.OK)]
         [SwaggerOperation(Summary = "Endpoint to borrow a book")]
-        public async Task<IActionResult> BorrowBook(Guid bookId)
+        public async Task<IActionResult> BorrowBook([FromBody] BorrowBookCommand command)
         {
-            return HandleResult(await _mediator.Send(new BorrowBookCommand { BookId = bookId }));
+            return HandleResult(await _mediator.Send(command));
         }
         /// <summary>
         /// Endpoint to set notification for customer when a book is avaialble

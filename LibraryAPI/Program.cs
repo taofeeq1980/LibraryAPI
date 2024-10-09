@@ -8,11 +8,6 @@ using Shared.Utilities;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
-//builder.Services.AddDbContext<LibraryDbContext>(options =>
-//    options.UseSqlServer(builder.Configuration.GetConnectionString("LibraryConnection"))
-//);
-
 // Add services to the container.
 builder.Services.AddControllers().AddNewtonsoftJson();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -60,8 +55,18 @@ builder.Services.AddSwaggerGen(c =>
     c.SchemaFilter<EnumSchemaFilter>();
 });
 
-// Register MyCustomMiddleware as a transient service
-//builder.Services.AddTransient<ErrorHandlingMiddleware>();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsPolicy",
+        builder => builder
+            .SetIsOriginAllowed((host) => true)
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials()
+            .Build());
+});
+
+builder.Services.AddHttpContextAccessor();
 
 // Register your DbContext with the DI container
 builder.Services.AddApplicationServices().AddPersistence(builder.Configuration);
@@ -84,7 +89,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Library Management v1");
-        c.DefaultModelsExpandDepth(-1);
+        c.RoutePrefix = string.Empty;
     });
 }
 
@@ -96,6 +101,8 @@ if (context.Database.IsSqlServer())
 }
 //Seed Books
 try { await app.SeedBookData(); } catch (Exception) { }
+
+app.UseCors("CorsPolicy");
 
 //global error-handling middleware
 app.UseMiddleware<ErrorHandlingMiddleware>();
