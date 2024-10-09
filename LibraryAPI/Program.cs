@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Persistence.DbContexts;
 using Persistence.Extensions;
-using System;
+using Shared.Utilities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -57,12 +57,23 @@ builder.Services.AddSwaggerGen(c =>
                         new List<string>()
                     }
                 });
+    c.SchemaFilter<EnumSchemaFilter>();
 });
 
 // Register MyCustomMiddleware as a transient service
-builder.Services.AddTransient<ErrorHandlingMiddleware>();
+//builder.Services.AddTransient<ErrorHandlingMiddleware>();
+
 // Register your DbContext with the DI container
 builder.Services.AddApplicationServices().AddPersistence(builder.Configuration);
+
+//Dependency Injection for Custom JWT authorization
+builder.Services.AddCustomAuthorizationServices(builder.Configuration);
+
+builder.Services.AddRouting(options =>
+{
+    options.LowercaseUrls = true; // Enforce lowercase URLs
+    options.LowercaseQueryStrings = true; // Optional: lowercase query strings
+});
 
 var app = builder.Build();
 
@@ -81,8 +92,10 @@ using var scope = app.Services.CreateScope();
 var context = scope.ServiceProvider.GetRequiredService<LibraryDbContext>();
 if (context.Database.IsSqlServer())
 {
-    //await context.Database.MigrateAsync();
+    await context.Database.MigrateAsync();
 }
+//Seed Books
+try { await app.SeedBookData(); } catch (Exception) { }
 
 //global error-handling middleware
 app.UseMiddleware<ErrorHandlingMiddleware>();

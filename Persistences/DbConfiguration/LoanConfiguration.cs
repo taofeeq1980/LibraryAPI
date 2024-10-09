@@ -14,9 +14,9 @@ namespace Persistence.DbConfiguration
             _ = builder.HasIndex(x => x.BookId).IsUnique();
             _ = builder.HasIndex(x => x.CustomerId).IsUnique();
 
-            builder.HasOne(x => x.Customer) // Each Book has one Customer
-                  .WithMany(x => x.Loans)    // Each Customer can have many loans of books
-                  .HasForeignKey(x => x.CustomerId)  // Foreign key in the Book entity
+            builder.HasOne(x => x.Customer)
+                  .WithMany(x => x.Loans)
+                  .HasForeignKey(x => x.CustomerId)
                   .OnDelete(DeleteBehavior.Restrict);
         }
     }

@@ -6,5 +6,6 @@
         public Customer? Customer { get; set; }
         public Guid? BookId { get; set; }
         public Book? Book { get; set; }
+        public bool IsReservationExpired {  get; set; }
     }
 }

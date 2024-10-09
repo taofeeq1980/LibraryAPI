@@ -10,6 +10,8 @@ namespace Persistence.DbConfiguration
         public void Configure(EntityTypeBuilder<Customer> builder)
         {
             builder.ConfigureBaseEntity();
+
+            _ = builder.Property(x => x.PhoneNumber).HasColumnType("varchar(50)");
             _ = builder.Property(x => x.Username).HasColumnType("varchar(50)");
             _ = builder.Property(x => x.Email).HasColumnType("varchar(50)");
             _ = builder.Property(x => x.PasswordHash).HasColumnType("varchar(max)");

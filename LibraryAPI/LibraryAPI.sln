@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApplicationServices", "..\A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Persistence", "..\Persistences\Persistence.csproj", "{6DB8CFD4-7992-4513-98E4-0E08BB84168C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "..\Shared\Shared.csproj", "{10561751-6F95-4683-9130-FE9A34B5377C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{6DB8CFD4-7992-4513-98E4-0E08BB84168C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6DB8CFD4-7992-4513-98E4-0E08BB84168C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6DB8CFD4-7992-4513-98E4-0E08BB84168C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10561751-6F95-4683-9130-FE9A34B5377C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10561751-6F95-4683-9130-FE9A34B5377C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10561751-6F95-4683-9130-FE9A34B5377C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10561751-6F95-4683-9130-FE9A34B5377C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,6 +54,7 @@ Global
 		{9DCE76EF-E121-4809-8110-D06AE8E14AAD} = {6D79033A-89D1-476F-89FA-E16D8E6A645C}
 		{8DD4D2B1-F9A3-42AB-A13F-DD752F178706} = {6D79033A-89D1-476F-89FA-E16D8E6A645C}
 		{6DB8CFD4-7992-4513-98E4-0E08BB84168C} = {5B311AC2-867E-46CC-AEE4-4D1F00F0EDAE}
+		{10561751-6F95-4683-9130-FE9A34B5377C} = {6D79033A-89D1-476F-89FA-E16D8E6A645C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {33AB0E80-B4DB-47E1-98DF-83F91528A4B8}

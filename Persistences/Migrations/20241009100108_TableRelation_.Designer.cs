@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistence.DbContexts;
 
@@ -11,9 +12,11 @@ using Persistence.DbContexts;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(LibraryDbContext))]
-    partial class LibraryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241009100108_TableRelation_")]
+    partial class TableRelation_
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,9 +51,6 @@ namespace Persistence.Migrations
 
                     b.Property<bool>("IsReserved")
                         .HasColumnType("bit");
-
-                    b.Property<DateTime>("ReturnedDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -88,10 +88,6 @@ namespace Persistence.Migrations
                     b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasColumnType("varchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Username")
                         .IsRequired()
@@ -194,9 +190,6 @@ namespace Persistence.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsReservationExpired")
-                        .HasColumnType("bit");
-
                     b.HasKey("Id");
 
                     b.HasIndex("BookId")
@@ -213,7 +206,7 @@ namespace Persistence.Migrations
             modelBuilder.Entity("Domain.Entities.Loan", b =>
                 {
                     b.HasOne("Domain.Entities.Book", "Book")
-                        .WithMany("Loans")
+                        .WithMany()
                         .HasForeignKey("BookId");
 
                     b.HasOne("Domain.Entities.Customer", "Customer")
@@ -229,7 +222,7 @@ namespace Persistence.Migrations
             modelBuilder.Entity("Domain.Entities.Notification", b =>
                 {
                     b.HasOne("Domain.Entities.Customer", "Customer")
-                        .WithMany("Notifications")
+                        .WithMany()
                         .HasForeignKey("CustomerId");
 
                     b.Navigation("Customer");
@@ -238,7 +231,7 @@ namespace Persistence.Migrations
             modelBuilder.Entity("Domain.Entities.Reservation", b =>
                 {
                     b.HasOne("Domain.Entities.Book", "Book")
-                        .WithMany("Reservations")
+                        .WithMany()
                         .HasForeignKey("BookId");
 
                     b.HasOne("Domain.Entities.Customer", "Customer")
@@ -251,18 +244,9 @@ namespace Persistence.Migrations
                     b.Navigation("Customer");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Book", b =>
-                {
-                    b.Navigation("Loans");
-
-                    b.Navigation("Reservations");
-                });
-
             modelBuilder.Entity("Domain.Entities.Customer", b =>
                 {
                     b.Navigation("Loans");
-
-                    b.Navigation("Notifications");
 
                     b.Navigation("Reservations");
                 });

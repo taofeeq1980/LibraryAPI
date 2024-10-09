@@ -14,11 +14,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Folder Include="Customers\Command\" />
 	  <Folder Include="Interfaces\Application\" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <ProjectReference Include="..\Domain\Domain.csproj" />
+	  <ProjectReference Include="..\Shared\Shared.csproj" />
 	</ItemGroup>
 
 </Project>
