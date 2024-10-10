@@ -55,7 +55,7 @@ namespace LibraryAPI.Controllers
         [HttpGet("search-book")]
         [ProducesResponseType(typeof(PagedResponse<GetBookResponse>), (int)HttpStatusCode.OK)]
         [SwaggerOperation(Summary = "Endpoint to get list of books")]
-        public async Task<IActionResult> SearchBook(SearchBookQuery query)
+        public async Task<IActionResult> SearchBook([FromQuery] SearchBookQuery query)
         {
             return HandleResult(await _mediator.Send(query));
         }
