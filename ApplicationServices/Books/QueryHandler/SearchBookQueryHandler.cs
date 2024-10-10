@@ -16,7 +16,8 @@ namespace ApplicationServices.Books.QueryHandler
         }
         public async Task<Result<List<GetBookResponse>>> Handle(SearchBookQuery request, CancellationToken cancellationToken)
         {
-            var books = await _context.Books.Where(b=> request.Title.ToLower().Contains(b.Title.ToLower())).Select(c => new GetBookResponse
+            var searchparam = "%" + request.Title + "%";
+            var books = await _context.Books.Where(b => EF.Functions.Like(b.Title, searchparam)).Select(c => new GetBookResponse
             {
                 Author = c.Author,
                 BookId = c.Id,
@@ -26,6 +27,7 @@ namespace ApplicationServices.Books.QueryHandler
                 ReturnedDate = c.ReturnedDate.ToString("yyyy-MM-dd h:mm tt"),
                 Title = c.Title
             }).ToListAsync(cancellationToken);
+
 
             return Result.Ok(books);
         }
