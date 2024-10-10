@@ -12,12 +12,10 @@ namespace ApplicationServices.Books.CommandHandler
     public class ReserveBookCommandHandler : IRequestHandler<ReserveBookCommand, Result>
     {
         private readonly ILibraryDbContext _context;
-        private readonly ILogger<ReserveBookCommandHandler> _logger;
         private readonly ICurrentUserService _currentUserService;
-        public ReserveBookCommandHandler(ILibraryDbContext context, ILogger<ReserveBookCommandHandler> logger, ICurrentUserService currentUserService)
+        public ReserveBookCommandHandler(ILibraryDbContext context, ICurrentUserService currentUserService)
         {
             _context = context;
-            _logger = logger;
             _currentUserService = currentUserService;
         }
         public async Task<Result> Handle(ReserveBookCommand request, CancellationToken cancellationToken)

@@ -12,11 +12,9 @@ namespace ApplicationServices.Books.QueryHandler
     public class GetBooksQueryHandler : IRequestHandler<GetBooksQuery, Result<PagedResponse<GetBookResponse>>>
     {
         private readonly ILibraryDbContext _context;
-        private readonly ILogger<GetBooksQueryHandler> _logger;
-        public GetBooksQueryHandler(ILibraryDbContext context, ILogger<GetBooksQueryHandler> logger)
+        public GetBooksQueryHandler(ILibraryDbContext context)
         {
             _context = context;
-            _logger = logger;
         }
         public async Task<Result<PagedResponse<GetBookResponse>>> Handle(GetBooksQuery request, CancellationToken cancellationToken)
         {
