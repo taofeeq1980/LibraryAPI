@@ -4,7 +4,6 @@ using Domain.Entities;
 using Domain.Interfaces.Infrastructure;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using Shared.BaseResponse;
 
 namespace ApplicationServices.Books.CommandHandler

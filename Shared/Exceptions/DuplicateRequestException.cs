@@ -1,5 +1,3 @@
-using System;
-
 namespace Shared.Exceptions
 {
     public class DuplicateRequestException: Exception

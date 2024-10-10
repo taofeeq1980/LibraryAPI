@@ -4,8 +4,8 @@ using Shared.BaseResponse;
 
 namespace ApplicationServices.Books.Query
 {
-    public class GetBookQuery : IRequest<Result<GetBookDetailResponse>>
+    public class SearchBookQuery : IRequest<Result<List<GetBookResponse>>>
     {
-        public Guid BookId { get; set; }
+        public required string Title { get; set; }
     }
 }

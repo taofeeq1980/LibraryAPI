@@ -41,11 +41,23 @@ namespace LibraryAPI.Controllers
         /// <param name="bookId"></param>
         /// <returns></returns>
         [HttpGet("get-book/{bookId}")]
-        [ProducesResponseType(typeof(PagedResponse<GetBookResponse>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(Result<GetBookResponse>), (int)HttpStatusCode.OK)]
         [SwaggerOperation(Summary = "Endpoint to get list of books")]
         public async Task<IActionResult> GetBook(Guid bookId)
         {
             return HandleResult(await _mediator.Send(new GetBookQuery { BookId = bookId }));
+        }
+        /// <summary>
+        /// Endpoint to search for book details
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        [HttpGet("search-book")]
+        [ProducesResponseType(typeof(PagedResponse<GetBookResponse>), (int)HttpStatusCode.OK)]
+        [SwaggerOperation(Summary = "Endpoint to get list of books")]
+        public async Task<IActionResult> SearchBook(SearchBookQuery query)
+        {
+            return HandleResult(await _mediator.Send(query));
         }
         /// <summary>
         /// Endpoint to reserve a book

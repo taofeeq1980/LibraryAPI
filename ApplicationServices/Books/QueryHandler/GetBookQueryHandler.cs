@@ -1,16 +1,10 @@
 ﻿using ApplicationServices.Books.Query;
 using ApplicationServices.Books.Response;
-using Domain.Entities;
 using Domain.Interfaces.Infrastructure;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Shared.BaseResponse;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ApplicationServices.Books.QueryHandler
 {

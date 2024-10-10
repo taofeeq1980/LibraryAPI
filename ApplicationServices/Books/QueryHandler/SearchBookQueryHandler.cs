@@ -4,20 +4,19 @@ using Domain.Interfaces.Infrastructure;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Shared.BaseResponse;
-using X.PagedList;
 
 namespace ApplicationServices.Books.QueryHandler
 {
-    public class GetBooksQueryHandler : IRequestHandler<GetBooksQuery, Result<PagedResponse<GetBookResponse>>>
+    public class SearchBookQueryHandler : IRequestHandler<SearchBookQuery, Result<List<GetBookResponse>>>
     {
         private readonly ILibraryDbContext _context;
-        public GetBooksQueryHandler(ILibraryDbContext context)
+        public SearchBookQueryHandler(ILibraryDbContext context)
         {
             _context = context;
         }
-        public async Task<Result<PagedResponse<GetBookResponse>>> Handle(GetBooksQuery request, CancellationToken cancellationToken)
+        public async Task<Result<List<GetBookResponse>>> Handle(SearchBookQuery request, CancellationToken cancellationToken)
         {
-            var books =  await _context.Books.Select(c => new GetBookResponse
+            var books = await _context.Books.Where(b=> request.Title.ToLower().Contains(b.Title.ToLower())).Select(c => new GetBookResponse
             {
                 Author = c.Author,
                 BookId = c.Id,
@@ -28,10 +27,7 @@ namespace ApplicationServices.Books.QueryHandler
                 Title = c.Title
             }).ToListAsync(cancellationToken);
 
-            var pageSize = request.DisablePageLimit ? int.MaxValue : request.PageSize;
-            var pagedRecord = await PagedResponse<GetBookResponse>.Create(books.OrderBy(x => x.Title).AsQueryable(), request.Page, pageSize);
-
-            return Result.Ok(pagedRecord);
+            return Result.Ok(books);
         }
     }
 }
