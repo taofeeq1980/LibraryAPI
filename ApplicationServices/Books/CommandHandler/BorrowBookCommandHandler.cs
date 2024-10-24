@@ -14,7 +14,10 @@ namespace ApplicationServices.Books.CommandHandler
         private readonly ILibraryDbContext _context;
         private readonly ILogger<BorrowBookCommandHandler> _logger;
         private readonly ICurrentUserService _currentUserService;
-        public BorrowBookCommandHandler(ILibraryDbContext context, ILogger<BorrowBookCommandHandler> logger, ICurrentUserService currentUserService)
+        public BorrowBookCommandHandler(
+            ILibraryDbContext context,
+            ILogger<BorrowBookCommandHandler> logger,
+            ICurrentUserService currentUserService)
         {
             _context = context;
             _logger = logger;
@@ -38,7 +41,7 @@ namespace ApplicationServices.Books.CommandHandler
             }
             book.IsReserved = false;
             book.IsAvailable = false;
-            book.ReturnedDate = DateTime.UtcNow.AddHours(request.Tenor);
+            book.ReturnedDate = DateTime.UtcNow.AddDays(request.Tenor);
 
             await _context.Loans.AddAsync(new Loan
             {
