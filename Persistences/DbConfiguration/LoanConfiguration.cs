@@ -11,8 +11,8 @@ namespace Persistence.DbConfiguration
         {
             builder.ConfigureBaseEntity();
 
-            _ = builder.HasIndex(x => x.BookId).IsUnique();
-            _ = builder.HasIndex(x => x.CustomerId).IsUnique();
+            _ = builder.HasIndex(x => x.BookId).IsUnique(false);
+            _ = builder.HasIndex(x => x.CustomerId).IsUnique(false);
 
             builder.HasOne(x => x.Customer)
                   .WithMany(x => x.Loans)
